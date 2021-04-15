@@ -8,7 +8,7 @@
   ],
   "author": "Jan Zak <zj@zakjan.cz>",
   "license": "MIT",
-  "repository": "github:zakjan/deck.gl-leafet",
+  "repository": "github:zakjan/deck.gl-leaflet",
   "main": "src/index.js",
   "browser": "dist/deck.gl-leaflet.min.js",
   "scripts": {

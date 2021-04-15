@@ -6,7 +6,7 @@
   <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css">
   <script src="https://unpkg.com/deck.gl@8.4.13/dist.min.js"></script>
-  <script src="https://unpkg.com/deck.gl-leaflet@1.0.0/dist/deck-gl.leaflet.min.js"></script>
+  <script src="https://unpkg.com/deck.gl-leaflet@1.0.0/dist/deck.gl-leaflet.min.js"></script>
   <!-- <script src="../dist/deck.gl-leaflet.min.js"></script> -->
   <style>
     body {
@@ -34,6 +34,7 @@ const startLatLng = [51.5, -0.11];
 const latDelta = 0.01;
 const lngDelta = latDelta * 1.75;
 const latLngs = new Array(9).fill(undefined).map((_, i) => [startLatLng[0] + Math.floor(i / 3) * latDelta, startLatLng[1] + (i % 3) * lngDelta]);
+map.setView([startLatLng[0] + latDelta, startLatLng[1] + lngDelta]);
 
 const deckLayer = new DeckGlLeaflet.LeafletLayer({
   layers: [
