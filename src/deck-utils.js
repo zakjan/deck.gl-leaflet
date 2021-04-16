@@ -9,10 +9,24 @@ import { Deck } from 'deck.gl';
  * @returns {ViewStateProps}
  */
 function getViewState(map) {
+  const container = map.getContainer();
+  const width = container.offsetWidth;
+  const height = container.offsetHeight;
+
+  const bounds = map.getBounds();
+  const northEast = bounds.getNorthEast();
+  const southWest = bounds.getSouthWest();
+  const topRight = map.project(northEast);
+  const bottomLeft = map.project(southWest);
+
+  // compute fractional zoom
+  const scale = height ? (bottomLeft.y - topRight.y) / height : 1;
+  const zoom = Math.log2(scale || 1) + map.getZoom() - 1;
+
   return {
     longitude: map.getCenter().lng,
     latitude: map.getCenter().lat,
-    zoom: map.getZoom() - 1,
+    zoom: zoom,
     pitch: 0,
     bearing: 0
   };
