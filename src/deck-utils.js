@@ -41,15 +41,20 @@ function getViewState(map) {
  */
 export function createDeckInstance(map, container, deck, props) {
   if (!deck) {
+    let repeat = true;
+    map.eachLayer(layer => {
+      if (layer instanceof L.GridLayer && layer.options && layer.options.noWrap) {
+        repeat = false;
+      }
+    });
+
     const viewState = getViewState(map);
     deck = new Deck({
       ...props,
       parent: container,
       controller: false,
       views: [
-          new MapView({
-              repeat: !map.options.noWrap,
-          }),
+          new MapView({ repeat }),
       ],
       viewState
     });
