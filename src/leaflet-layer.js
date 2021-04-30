@@ -32,6 +32,7 @@ export default class LeafletLayer extends L.Layer {
   onAdd(map) {
     this._map = map;
     this._container = L.DomUtil.create('div');
+    this._container.style.pointerEvents = 'none';
     this.getPane().appendChild(this._container);
     this._deck = createDeckInstance(this._map, this._container, this._deck, this.props);
 
