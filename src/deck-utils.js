@@ -1,5 +1,5 @@
 import * as L from 'leaflet';
-import { Deck } from 'deck.gl';
+import { Deck, MapView } from 'deck.gl';
 
 /** @typedef {import('deck.gl').DeckProps} DeckProps */
 /** @typedef {import('@deck.gl/core/lib/deck').ViewStateProps} ViewStateProps */
@@ -46,6 +46,11 @@ export function createDeckInstance(map, container, deck, props) {
       ...props,
       parent: container,
       controller: false,
+      views: [
+          new MapView({
+              repeat: !map.options.noWrap,
+          }),
+      ],
       viewState
     });
   }
