@@ -1,5 +1,7 @@
 # Changelog
 
+## 1.0.4
+
 - fix low zoom levels
 
 ## 1.0.3
