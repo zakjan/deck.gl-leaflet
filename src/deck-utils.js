@@ -33,7 +33,6 @@ export function createDeckInstance(map, container, deck, props) {
         repeat = repeat || !layer.options.noWrap;
       }
     });
-    console.log(repeat);
 
     const viewState = getViewState(map);
     deck = new Deck({
