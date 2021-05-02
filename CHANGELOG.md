@@ -1,5 +1,7 @@
 # Changelog
 
+- fix low zoom levels
+
 ## 1.0.3
 
 - support rendering multiple copies of the map at low zoom levels #3 (previous implementation was incorrect)
