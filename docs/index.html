@@ -42,16 +42,16 @@ map.setView([startLatLng[0] + latDelta, startLatLng[1] + lngDelta]);
 
 const deckLayer = new DeckGlLeaflet.LeafletLayer({
   layers: [
-    new deck.SolidPolygonLayer({
-      data: [
-        [[-180, 85.06], [0, 85.06], [180, 85.06], [180, -85.06], [0, -85.06], [-180, -85.06]]
-      ],
-      getPolygon: d => d,
-      stroked: false,
-      filled: true,
-      getFillColor: [40, 40, 40],
-      opacity: 0.1,
-    }),
+    // new deck.SolidPolygonLayer({
+    //   data: [
+    //     [[-180, 85.06], [0, 85.06], [180, 85.06], [180, -85.06], [0, -85.06], [-180, -85.06]]
+    //   ],
+    //   getPolygon: d => d,
+    //   stroked: false,
+    //   filled: true,
+    //   getFillColor: [40, 40, 40],
+    //   opacity: 0.1,
+    // }),
     new deck.ScatterplotLayer({
       data: latLngs.map(latLng => ({ position: [latLng[1], latLng[0]] })),
       getPosition: d => d.position,
