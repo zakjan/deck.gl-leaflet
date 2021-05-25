@@ -1,5 +1,7 @@
 # Changelog
 
+- remove support for rendering multiple copies of the map, prefer passing MapView in props
+
 ## 1.0.4
 
 - fix low zoom levels

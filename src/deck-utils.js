@@ -1,5 +1,5 @@
 import * as L from 'leaflet';
-import { Deck, MapView } from 'deck.gl';
+import { Deck } from 'deck.gl';
 
 /** @typedef {import('deck.gl').DeckProps} DeckProps */
 /** @typedef {import('@deck.gl/core/lib/deck').ViewStateProps} ViewStateProps */
@@ -27,21 +27,11 @@ function getViewState(map) {
  */
 export function createDeckInstance(map, container, deck, props) {
   if (!deck) {
-    let repeat = false;
-    map.eachLayer(layer => {
-      if (layer instanceof L.GridLayer) {
-        repeat = repeat || !layer.options.noWrap;
-      }
-    });
-
     const viewState = getViewState(map);
     deck = new Deck({
       ...props,
       parent: container,
       controller: false,
-      views: [
-        new MapView({ repeat }),
-      ],
       viewState,
     });
   }

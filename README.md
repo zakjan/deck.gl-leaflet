@@ -31,6 +31,11 @@ import { LeafletLayer } from 'deck.gl-leaflet';
 ```
 const map = L.map(...);
 const deckLayer = new LeafletLayer({
+  views: [
+    new MapView({
+      repeat: true
+    })
+  ],
   layers: [
     new ScatterplotLayer({
       data: [...],

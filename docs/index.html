@@ -41,6 +41,11 @@ const latLngs = new Array(9).fill(undefined).map((_, i) => [startLatLng[0] + Mat
 map.setView([startLatLng[0] + latDelta, startLatLng[1] + lngDelta]);
 
 const deckLayer = new DeckGlLeaflet.LeafletLayer({
+  views: [
+    new deck.MapView({
+      repeat: true
+    })
+  ],
   layers: [
     // new deck.SolidPolygonLayer({
     //   data: [
