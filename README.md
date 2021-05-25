@@ -19,7 +19,7 @@ npm install deck.gl-leaflet
 or
 
 ```
-<script src="https://unpkg.com/deck.gl-leaflet@1.0.4/dist/deck.gl-leaflet.min.js"></script>
+<script src="https://unpkg.com/deck.gl-leaflet@1.0.5/dist/deck.gl-leaflet.min.js"></script>
 ```
 
 ## Usage
