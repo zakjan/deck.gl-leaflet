@@ -1,5 +1,7 @@
 # Changelog
 
+- add leaflet-layer class
+
 ## 1.0.5
 
 - remove support for rendering multiple copies of the map, prefer passing MapView in props
