@@ -14,6 +14,9 @@ export default class LeafletLayer extends L.Layer {
   /** @type {Deck | undefined} */
   _deck = undefined;
 
+  /** @type {boolean | undefined} */
+  _deckAnimate = undefined;
+
   updateBound = this.update.bind(this);
   animateZoomBound = this.animateZoom.bind(this);
 
@@ -95,6 +98,12 @@ export default class LeafletLayer extends L.Layer {
     L.DomUtil.setPosition(this._container, offset);
 
     updateDeckView(this._deck, this._map);
+
+    // unpause deck.gl animation after Leaflet zoom animation
+    if (this._deckAnimate != undefined) {
+      this._deck.setProps({ _animate: this._deckAnimate });
+      this._deckAnimate = undefined;
+    }
   }
 
   /**
@@ -103,6 +112,12 @@ export default class LeafletLayer extends L.Layer {
    */
   animateZoom(event) {
     this.updateTransform(event.center, event.zoom);
+
+    // pause deck.gl animation before Leaflet zoom animation
+    if (this._deck.props._animate) {
+      this._deckAnimate = this._deck.props._animate;
+      this._deck.setProps({ _animate: false });
+    }
   }
 
   /**
