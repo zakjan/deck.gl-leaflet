@@ -47,16 +47,17 @@ const deckLayer = new DeckGlLeaflet.LeafletLayer({
     })
   ],
   layers: [
-    // new deck.SolidPolygonLayer({
-    //   data: [
-    //     [[-180, 85.06], [0, 85.06], [180, 85.06], [180, -85.06], [0, -85.06], [-180, -85.06]]
-    //   ],
-    //   getPolygon: d => d,
-    //   stroked: false,
-    //   filled: true,
-    //   getFillColor: [40, 40, 40],
-    //   opacity: 0.1,
-    // }),
+    new deck.PolygonLayer({
+      data: [
+        [[-180, 85.06], [0, 85.06], [180, 85.06], [180, -85.06], [0, -85.06], [-180, -85.06]]
+      ],
+      getPolygon: d => d,
+      stroked: true,
+      filled: false,
+      getLineColor: [255, 0, 0],
+      getLineWidth: 2,
+      lineWidthUnits: 'pixels',
+    }),
     new deck.ScatterplotLayer({
       data: latLngs.map(latLng => ({ position: [latLng[1], latLng[0]] })),
       getPosition: d => d.position,

@@ -1,5 +1,7 @@
 # Changelog
 
+- animate zoom with CSS transition
+
 ## 1.0.6
 
 - add leaflet-layer class
