@@ -1,5 +1,7 @@
 # Changelog
 
+# 1.1.0
+
 - pause deck.gl animation during Leaflet zoom animation
 - animate zoom with CSS transition
 
