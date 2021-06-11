@@ -5,9 +5,6 @@ import { createDeckInstance, updateDeckView } from './deck-utils';
 /** @typedef {import('deck.gl').DeckProps} DeckProps */
 
 export default class LeafletLayer extends L.Layer {
-  /** @type {L.Map | undefined} */
-  _map = undefined;
-
   /** @type {HTMLElement | undefined} */
   _container = undefined;
 
@@ -15,10 +12,7 @@ export default class LeafletLayer extends L.Layer {
   _deck = undefined;
 
   /** @type {boolean | undefined} */
-  _deckAnimate = undefined;
-
-  updateBound = this.update.bind(this);
-  animateZoomBound = this.animateZoom.bind(this);
+  _animate = undefined;
 
   /**
    * @param {DeckProps} props
@@ -30,27 +24,19 @@ export default class LeafletLayer extends L.Layer {
   }
 
   /**
-   * @param {L.Map} map
    * @returns {this}
    */
-  onAdd(map) {
-    this._map = map;
+  onAdd() {
     this._container = L.DomUtil.create('div');
     this._container.className = 'leaflet-layer';
     this._container.style.pointerEvents = 'none';
     if (this._zoomAnimated) {
       L.DomUtil.addClass(this._container, 'leaflet-zoom-animated');
     }
+
     this.getPane().appendChild(this._container);
-
     this._deck = createDeckInstance(this._map, this._container, this._deck, this.props);
-
-    this._map.on('resize', this.updateBound);
-    this._map.on('move', this.updateBound);
-    this._map.on('zoomanim', this.animateZoomBound);
-    this._map.on('zoom', this.updateBound);
-
-    this.update();
+    this._update();
 
     return this;
   }
@@ -60,18 +46,31 @@ export default class LeafletLayer extends L.Layer {
    * @returns {this}
    */
   onRemove(_map) {
-    this._map.off('resize', this.updateBound);
-    this._map.off('move', this.updateBound);
-    this._map.off('zoomanim', this.animateZoomBound);
-    this._map.off('zoom', this.updateBound);
-
-    this._map = undefined;
     L.DomUtil.remove(this._container);
     this._container = undefined;
+
     this._deck.finalize();
     this._deck = undefined;
 
     return this;
+  }
+
+  /**
+   * @returns {Object}
+   */
+  getEvents() {
+    const events = {
+      viewreset: this._reset,
+      movestart: this._onMoveStart,
+      moveend: this._onMoveEnd,
+      zoomstart: this._onZoomStart,
+      zoom: this._onZoom,
+      zoomend: this._onZoomEnd,
+    };
+    if (this._zoomAnimated) {
+      events.zoomanim = this._onAnimZoom;
+    }
+    return events;
   }
 
   /**
@@ -89,35 +88,92 @@ export default class LeafletLayer extends L.Layer {
   /**
    * @returns {void}
    */
-  update() {
-    this._container.style.width = `${this._map.getSize().x}px`;
-    this._container.style.height = `${this._map.getSize().y}px`;
+  _update() {
+    if (this._map._animatingZoom) {
+      return;
+    }
+
+    const size = this._map.getSize();
+    this._container.style.width = `${size.x}px`;
+    this._container.style.height = `${size.y}px`;
 
     // invert map position
     const offset = this._map._getMapPanePos().multiplyBy(-1);
     L.DomUtil.setPosition(this._container, offset);
 
     updateDeckView(this._deck, this._map);
+  }
 
-    // unpause deck.gl animation after Leaflet zoom animation
-    if (this._deckAnimate != undefined) {
-      this._deck.setProps({ _animate: this._deckAnimate });
-      this._deckAnimate = undefined;
+  /**
+   * @returns {void}
+   */
+  _pauseAnimation() {
+    if (this._deck.props._animate) {
+      this._animate = this._deck.props._animate;
+      this._deck.setProps({ _animate: false });
     }
+  }
+
+  /**
+   * @returns {void}
+   */
+  _unpauseAnimation() {
+    if (this._animate) {
+      this._deck.setProps({ _animate: this._animate });
+      this._animate = undefined;
+    }
+  }
+
+  /**
+   * @returns {void}
+   */
+  _reset() {
+		this._updateTransform(this._map.getCenter(), this._map.getZoom());
+		this._update();
+  }
+
+  /**
+   * @returns {void}
+   */
+  _onMoveStart() {
+    this._pauseAnimation();
+  }
+
+  /**
+   * @returns {void}
+   */
+  _onMoveEnd() {
+    this._update();
+    this._unpauseAnimation();
+  }
+
+  /**
+   * @returns {void}
+   */
+  _onZoomStart() {
+    this._pauseAnimation();
   }
 
   /**
    * @param {L.ZoomAnimEvent} event
    * @returns {void}
    */
-  animateZoom(event) {
-    this.updateTransform(event.center, event.zoom);
+  _onAnimZoom(event) {
+    this._updateTransform(event.center, event.zoom);
+  }
 
-    // pause deck.gl animation before Leaflet zoom animation
-    if (this._deck.props._animate) {
-      this._deckAnimate = this._deck.props._animate;
-      this._deck.setProps({ _animate: false });
-    }
+  /**
+   * @returns {void}
+   */
+  _onZoom() {
+    this._updateTransform(this._map.getCenter(), this._map.getZoom());
+  }
+
+  /**
+   * @returns {void}
+   */
+  _onZoomEnd() {
+    this._unpauseAnimation();
   }
 
   /**
@@ -126,15 +182,14 @@ export default class LeafletLayer extends L.Layer {
    * @param {L.LatLng} center
    * @param {number} zoom
    */
-  updateTransform(center, zoom) {
-    var scale = this._map.getZoomScale(zoom, this._map.getZoom()),
-        position = L.DomUtil.getPosition(this._container),
-        viewHalf = this._map.getSize().multiplyBy(0.5),
-        currentCenterPoint = this._map.project(this._map.getCenter(), zoom),
-        destCenterPoint = this._map.project(center, zoom),
-        centerOffset = destCenterPoint.subtract(currentCenterPoint),
-
-        topLeftOffset = viewHalf.multiplyBy(-scale).add(position).add(viewHalf).subtract(centerOffset);
+  _updateTransform(center, zoom) {
+    const scale = this._map.getZoomScale(zoom, this._map.getZoom());
+    const position = L.DomUtil.getPosition(this._container);
+    const viewHalf = this._map.getSize().multiplyBy(0.5);
+    const currentCenterPoint = this._map.project(this._map.getCenter(), zoom);
+    const destCenterPoint = this._map.project(center, zoom);
+    const centerOffset = destCenterPoint.subtract(currentCenterPoint);
+    const topLeftOffset = viewHalf.multiplyBy(-scale).add(position).add(viewHalf).subtract(centerOffset);
 
     if (L.Browser.any3d) {
       L.DomUtil.setTransform(this._container, topLeftOffset, scale);

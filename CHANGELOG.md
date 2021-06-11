@@ -1,5 +1,7 @@
 # Changelog
 
+- pause deck.gl animation during Leaflet move
+
 # 1.1.0
 
 - pause deck.gl animation during Leaflet zoom animation
