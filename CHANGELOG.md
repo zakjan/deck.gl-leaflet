@@ -1,5 +1,7 @@
 # Changelog
 
+# 1.1.1
+
 - pause deck.gl animation during Leaflet move
 
 # 1.1.0
