@@ -1,5 +1,9 @@
 # Changelog
 
+# 1.1.2
+
+- update dependency from deck.gl to @deck.gl/core
+
 # 1.1.1
 
 - pause deck.gl animation during Leaflet move
