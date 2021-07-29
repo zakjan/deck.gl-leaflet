@@ -1,7 +1,7 @@
 import * as L from 'leaflet';
-import { Deck } from 'deck.gl';
+import { Deck } from '@deck.gl/core';
 
-/** @typedef {import('deck.gl').DeckProps} DeckProps */
+/** @typedef {import('@deck.gl/core/lib/deck').DeckProps} DeckProps */
 /** @typedef {import('@deck.gl/core/lib/deck').ViewStateProps} ViewStateProps */
 
 /**

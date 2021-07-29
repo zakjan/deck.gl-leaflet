@@ -1,8 +1,8 @@
 import * as L from 'leaflet';
 import { createDeckInstance, updateDeckView } from './deck-utils';
 
-/** @typedef {import('deck.gl').Deck} Deck */
-/** @typedef {import('deck.gl').DeckProps} DeckProps */
+/** @typedef {import('@deck.gl/core').Deck} Deck */
+/** @typedef {import('@deck.gl/core/lib/deck').DeckProps} DeckProps */
 
 export default class LeafletLayer extends L.Layer {
   /** @type {HTMLElement | undefined} */

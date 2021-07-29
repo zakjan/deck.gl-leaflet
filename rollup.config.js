@@ -15,7 +15,7 @@ function bundle(filename, options = {}) {
       sourcemap: true,
       globals: {
         leaflet: 'L',
-        'deck.gl': 'deck',
+        '@deck.gl/core': 'deck',
       },
     },
     external: [
