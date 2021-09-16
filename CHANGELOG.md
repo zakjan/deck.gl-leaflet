@@ -1,5 +1,7 @@
 # Changelog
 
+# 1.2.0
+
 - add picking support
 
 # 1.1.2
