@@ -29,7 +29,6 @@ export default class LeafletLayer extends L.Layer {
   onAdd() {
     this._container = L.DomUtil.create('div');
     this._container.className = 'leaflet-layer';
-    this._container.style.pointerEvents = 'none';
     if (this._zoomAnimated) {
       L.DomUtil.addClass(this._container, 'leaflet-zoom-animated');
     }
@@ -83,6 +82,30 @@ export default class LeafletLayer extends L.Layer {
     if (this._deck) {
       this._deck.setProps(props);
     }
+  }
+
+  /**
+   * @param {any} params
+   * @returns {any}
+   */
+  pickObject(params) {
+    return this._deck && this._deck.pickObject(params);
+  }
+
+  /**
+   * @param {any} params
+   * @returns {any}
+   */
+  pickMultipleObjects(params) {
+    return this._deck && this._deck.pickMultipleObjects(params);
+  }
+
+  /**
+   * @param {any} params
+   * @returns {any}
+   */
+  pickObjects(params) {
+    return this._deck && this._deck.pickObjects(params);
   }
 
   /**

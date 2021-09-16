@@ -61,12 +61,15 @@
           lineWidthUnits: 'pixels',
         }),
         new deck.ScatterplotLayer({
-          data: latLngs.map(latLng => ({ position: [latLng[1], latLng[0]] })),
+          data: latLngs.map((latLng, i) => ({ id: i, position: [latLng[1], latLng[0]] })),
           getPosition: d => d.position,
           getRadius: 100,
           getFillColor: [255, 0, 0],
+          pickable: true,
         }),
       ],
+      onHover: ({ object }) => object && console.log(object),
+      getTooltip: ({ object }) => object && { html: object.id },
     });
     map.addLayer(deckLayer);
 

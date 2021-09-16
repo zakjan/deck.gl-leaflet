@@ -1,5 +1,7 @@
 # Changelog
 
+- add picking support
+
 # 1.1.2
 
 - update dependency from deck.gl to @deck.gl/core
