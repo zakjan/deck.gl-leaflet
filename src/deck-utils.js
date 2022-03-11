@@ -32,6 +32,7 @@ export function createDeckInstance(map, container, deck, props) {
       ...props,
       parent: container,
       controller: false,
+      style: { zIndex: 'auto' },
       viewState,
     });
   }

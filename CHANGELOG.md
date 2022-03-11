@@ -1,5 +1,9 @@
 # Changelog
 
+# 1.2.1
+
+- fix tooltip position by resetting deck z-index
+
 # 1.2.0
 
 - add picking support
