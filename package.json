@@ -10,6 +10,7 @@
   "license": "MIT",
   "repository": "github:zakjan/deck.gl-leaflet",
   "main": "src/index.js",
+  "types": "src/index.d.ts",
   "browser": "dist/deck.gl-leaflet.min.js",
   "scripts": {
     "build": "rimraf dist && rollup -c",
@@ -32,6 +33,7 @@
     "leaflet": "^1.7.1",
     "rimraf": "^3.0.2",
     "rollup": "^2.55.0",
+    "rollup-plugin-copy": "^3.5.0",
     "rollup-plugin-terser": "^7.0.2",
     "rollup-plugin-visualizer": "^5.5.2"
   },
