@@ -1,5 +1,9 @@
 # Changelog
 
+# 1.3.1
+
+- fix exposing fields
+
 # 1.3.0
 
 - migrate to TS, ESM
