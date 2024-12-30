@@ -4,6 +4,9 @@
 [![](https://img.shields.io/david/zakjan/deck.gl-leaflet)](https://www.npmjs.com/package/deck.gl-leaflet)
 [![](https://img.shields.io/bundlephobia/min/deck.gl-leaflet)](https://www.npmjs.com/package/deck.gl-leaflet)
 
+> [!WARNING]
+> This package has been deprecated in favour of [@deck.gl-community/leaflet](https://github.com/visgl/deck.gl-community/tree/master/modules/leaflet).
+
 deck.gl plugin for Leaflet
 
 [Demo](https://zakjan.github.io/deck.gl-leaflet/)
